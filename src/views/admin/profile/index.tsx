@@ -50,10 +50,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    console.log("set profile");
-
-    console.log(user);
-
     if (isEmployer) {
       setFields([
         {
@@ -109,8 +105,8 @@ const Profile = () => {
 
   return (
     <div className="ml-4 mt-3">
-      <div className="flex gap-3 pb-6">
-        <Card extra={"w-2/5 h-full p-6 sm:overflow-x-auto"}>
+      <div className="flex flex-col md:flex-row gap-3 pb-6">
+        <Card extra={"w-full md:w-2/5 h-full p-6 sm:overflow-x-auto"}>
           <div className="flex h-[250px] flex-col items-center gap-1">
             <div className="relative h-[200px] w-[200px] rounded-full">
               <img
@@ -128,7 +124,7 @@ const Profile = () => {
             <p className="text-xs font-bold text-gray-500">{user?.roles}</p>
           </div>
         </Card>
-        <Card extra={"w-3/5 h-full p-6 sm:overflow-x-auto"}>
+        <Card extra={"w-full md:w-3/5 h-full p-6 sm:overflow-x-auto"}>
           <div className="relative h-[250px]">
             <>
               {fields != null &&
@@ -160,6 +156,7 @@ const Profile = () => {
                       setProfile((state) => ({
                         ...state,
                         ...user,
+                        logo: [],
                       }));
                     }}
                   >
@@ -411,7 +408,10 @@ const Profile = () => {
               {profile &&
                 profile?.logo?.length > 0 &&
                 Array.from(profile?.logo)?.map((file: any, index: number) => (
-                  <div key={file?.name} className="h-[80px] w-[80px]">
+                  <div
+                    key={file?.name}
+                    className="h-[80px] w-[80px] overflow-hidden"
+                  >
                     <img src={URL.createObjectURL(file)} alt={`logo${index}`} />
                   </div>
                 ))}
