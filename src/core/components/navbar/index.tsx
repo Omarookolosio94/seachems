@@ -96,7 +96,11 @@ const Navbar = (props: {
         {/* Profile & Dropdown */}
         <Dropdown
           button={
-            <img className="h-10 w-10 rounded-full" src={avatar} alt="user" />
+            <img
+              className="h-10 w-10 rounded-full"
+              src={user?.logo[0]?.url ?? avatar}
+              alt="user"
+            />
           }
           children={
             <div className="flex h-auto w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat pb-1 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">

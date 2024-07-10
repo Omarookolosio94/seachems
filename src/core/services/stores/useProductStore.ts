@@ -23,7 +23,7 @@ type ProductState = {
   updateProductDetail: (detail: ProductDetail, productId: string) => void;
   updateProductPrice: (price: ProductPrice, productId: string) => void;
   updateProductListing: (listing: ProductListing, productId: string) => void;
-  updateGallery: (gallery: any, productId: string) => void;
+  updateGallery: (gallery: any, productId: string) => Promise<UIResponse>;
 };
 
 const useProductStore = create<ProductState>()(
@@ -239,6 +239,7 @@ const useProductStore = create<ProductState>()(
             const response = await updateGallery(gallery, productId);
 
             const { success, statusCode, data, message } = response;
+
             if (success) {
               set((state) => ({
                 productList: {
@@ -263,7 +264,7 @@ const useProductStore = create<ProductState>()(
               });
             }
             set({ isLoading: false });
-            return success;
+            return response;
           } catch (err) {
             set({ isLoading: false });
             notification({

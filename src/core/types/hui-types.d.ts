@@ -323,4 +323,11 @@ declare global {
     saleId: string;
     isPaid: boolean;
   }
+
+  interface UIResponse {
+    success: boolean;
+    statusCode: number;
+    message: string;
+    data: any;
+  }
 }

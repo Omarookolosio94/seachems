@@ -114,7 +114,7 @@ const Profile = () => {
           <div className="flex h-[250px] flex-col items-center gap-1">
             <div className="relative h-[200px] w-[200px] rounded-full">
               <img
-                src={avatar}
+                src={user?.logo[0]?.url ?? avatar}
                 alt="user"
                 className="h-[200px] w-[200px] rounded-full"
               />
@@ -134,7 +134,7 @@ const Profile = () => {
               {fields != null &&
                 fields?.length > 0 &&
                 fields?.map((field) => (
-                  <div className="mb-3">
+                  <div className="mb-3" key={field?.name}>
                     <span className="text-gray-500">{field?.name}: </span>
                     {field?.name == "Store Front Link" ? (
                       <a
@@ -410,16 +410,11 @@ const Profile = () => {
             <div className="mb-5 flex flex-wrap gap-2">
               {profile &&
                 profile?.logo?.length > 0 &&
-                Array.from(profile?.logo)?.map(
-                  (file: any, index: number) => (
-                    <div key={file?.name} className="h-[80px] w-[80px]">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`logo${index}`}
-                      />
-                    </div>
-                  )
-                )}
+                Array.from(profile?.logo)?.map((file: any, index: number) => (
+                  <div key={file?.name} className="h-[80px] w-[80px]">
+                    <img src={URL.createObjectURL(file)} alt={`logo${index}`} />
+                  </div>
+                ))}
             </div>
 
             <div className="flex gap-3">

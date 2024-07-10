@@ -277,7 +277,21 @@ const Products = () => {
           "All images in this product gallery, will be updated. Do you still want to proceed"
         )
       ) {
-        await updateGalleryAction(updateGalleryForm, selected?.id);
+        var res = await updateGalleryAction(updateGalleryForm, selected?.id);
+
+        if (res?.success) {
+          setSelected((state: any) => ({
+            ...state,
+            ...res?.data,
+          }));
+
+          setDisplayedImg(res?.data?.gallery[0]?.url);
+
+          setUpdateGalleryForm((state) => ({
+            ...state,
+            gallery: [],
+          }));
+        }
       }
     } else {
       notification({
@@ -363,6 +377,9 @@ const Products = () => {
                       className="flex items-center gap-2 hover:cursor-pointer"
                       onClick={() => {
                         setSelected(product);
+                        setDisplayedImg(
+                          product?.gallery[0]?.url ?? imgPlaceholder
+                        );
                         setOpenGallery(true);
                       }}
                     >
@@ -1465,36 +1482,44 @@ const Products = () => {
             setOpenGallery(false);
             setSelected({});
             clearError();
+            setUpdateGalleryForm((state) => ({
+              ...state,
+              gallery: [],
+            }));
           }}
         >
           <div className="mb-5 flex w-full flex-col-reverse gap-3 sm:flex-row">
             <div className="flex w-full justify-center gap-5 sm:block sm:w-[80px]">
-              <div
-                className={`${gallery}`}
-                onClick={() => setDisplayedImg(imgPlaceholder)}
-              >
-                <img src={imgPlaceholder} alt="" className="h-2/3 w-2/3" />
-              </div>
-              <div
-                className={`${gallery}`}
-                onClick={() => setDisplayedImg(imgPlaceholder)}
-              >
-                <img src={imgPlaceholder} alt="" className="h-2/3 w-2/3" />
-              </div>
-              <div
-                className={`${gallery}`}
-                onClick={() => setDisplayedImg(imgPlaceholder)}
-              >
-                <img src={imgPlaceholder} alt="" className="h-2/3 w-2/3" />
-              </div>
-              <div
-                className={`${gallery} !mb-0`}
-                onClick={() => setDisplayedImg(imgPlaceholder)}
-              >
-                <img src={imgPlaceholder} alt="" className="h-2/3 w-2/3" />
-              </div>
+              {selected?.gallery?.length > 0
+                ? selected?.gallery?.map((pic: any) => (
+                    <div
+                      key={pic?.id}
+                      className={`${gallery}`}
+                      onClick={() => setDisplayedImg(pic?.url)}
+                    >
+                      <img
+                        src={pic?.url ?? imgPlaceholder}
+                        alt=""
+                        className="h-2/3 w-2/3"
+                      />
+                    </div>
+                  ))
+                : [1, 2, 3, 4].map((count) => (
+                    <div
+                      key={count}
+                      className={`${gallery}`}
+                      onClick={() => setDisplayedImg(imgPlaceholder)}
+                    >
+                      <img
+                        src={imgPlaceholder}
+                        alt=""
+                        className="h-2/3 w-2/3"
+                      />
+                    </div>
+                  ))}
             </div>
-            <div className="flex h-auto w-full items-center justify-center rounded-[4px] border bg-[#f5f5f5] py-5 sm:py-0">
+
+            <div className="flex h-[600px] w-full items-center justify-center overflow-y-scroll rounded-[4px] border bg-[#f5f5f5] py-5 sm:py-0">
               <div className="flex items-center justify-center">
                 <img src={displayedImg} alt="" className="" />
               </div>
@@ -1518,7 +1543,7 @@ const Products = () => {
                 updateGalleryForm?.gallery?.length > 0 &&
                 Array.from(updateGalleryForm?.gallery)?.map(
                   (file: any, index: number) => (
-                    <div key={file?.name} className="h-[80px] w-[80px]">
+                    <div key={file?.name} className="overflow-hidden h-[80px] w-[80px]">
                       <img
                         src={URL.createObjectURL(file)}
                         alt={`logo${index}`}
@@ -1532,9 +1557,13 @@ const Products = () => {
               <Button
                 type="button"
                 onClick={() => {
-                  setOpenCatalogForm(false);
+                  setOpenGallery(false);
                   setSelected({});
                   clearError();
+                  setUpdateGalleryForm((state) => ({
+                    ...state,
+                    gallery: [],
+                  }));
                 }}
                 style="linear mb-5 mt-3 w-full rounded-md bg-red-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-red-600 active:bg-red-700 dark:bg-red-400 dark:text-white dark:hover:bg-red-300 dark:active:bg-red-200 text-xs"
               >
