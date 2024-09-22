@@ -173,13 +173,13 @@ const Profile = () => {
       <Card extra={"w-full h-full p-6 sm:overflow-x-auto mb-5"}>
         <p className="mr-1 font-bold text-brand-500 dark:text-white">About:</p>
         {isEmployer ? (
-          <p>
+          <p className="whitespace-pre-wrap">
             {user?.about == null || user?.about?.length < 1
               ? "please include information about your business"
               : user?.about}
           </p>
         ) : (
-          <p>
+          <p className="whitespace-pre-wrap">
             {user?.employer?.about == null || user?.employer?.about?.length < 1
               ? "about information has not been included yet"
               : user?.employer?.about}
@@ -214,13 +214,13 @@ const Profile = () => {
         </p>
 
         {isEmployer ? (
-          <p>
+          <p className="whitespace-pre-wrap">
             {user?.services == null || user?.services?.length < 1
               ? "No services yet"
               : user?.services}
           </p>
         ) : (
-          <p>
+          <p className="whitespace-pre-wrap">
             {user?.employer?.services == null ||
             user?.employer?.services?.length < 1
               ? "No services yet"
@@ -235,14 +235,14 @@ const Profile = () => {
         </p>
 
         {isEmployer ? (
-          <p>
+          <p className="whitespace-pre-wrap">
             {user?.termsAndConditions == "null" ||
             user?.termsAndConditions?.length < 1
               ? "No Terms yet"
               : user?.termsAndConditions}
           </p>
         ) : (
-          <p>
+          <p className="whitespace-pre-wrap">
             {user?.termsAndConditions == "null" ||
             user?.termsAndConditions?.length < 1
               ? "no business Terms"

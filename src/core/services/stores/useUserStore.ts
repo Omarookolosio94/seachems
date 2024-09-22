@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import {
+  addBankAccount,
   addEmployee,
   addEmployer,
   assignEmployee,
+  deleteBankAccount,
   deleteEmployee,
   editEmployer,
+  getBankAccounts,
   getEmployees,
   getOtp,
   login,
@@ -24,6 +27,7 @@ type UserState = {
   user: any | {};
   employees: Employee[];
   access: any | {};
+  bankAccounts: BankAccount[];
   reset: () => void;
   updateError: (name: string) => void;
   login: (email: string, password: string, isEmployer: boolean) => void;
@@ -41,6 +45,9 @@ type UserState = {
   ) => void;
   updateEmployeeStatus: (isActive: boolean, employeeId: string) => void;
   deleteEmployee: (employeeId: string) => void;
+  getBankAccounts: (employerId: string) => void;
+  addBankAccount: (newAccount: NewBankAccount) => Promise<boolean>;
+  deleteBankAccount: (accountId: string) => Promise<boolean>;
 };
 
 const useUserStore = create<UserState>()(
@@ -53,6 +60,7 @@ const useUserStore = create<UserState>()(
         errors: {},
         employees: [],
         access: {},
+        bankAccounts: [],
         reset: () => {
           set({
             isLoading: false,
@@ -411,6 +419,107 @@ const useUserStore = create<UserState>()(
               set((state) => ({
                 employees: state.employees.filter(
                   (employee: any) => employee.id !== employeeId
+                ),
+              }));
+              notification({
+                title: "",
+                message,
+                type: "success",
+              });
+            } else {
+              if (statusCode === 400) {
+                set({ errors: data });
+              }
+
+              notification({
+                title: "",
+                message: message,
+                type: "danger",
+              });
+            }
+            set({ isLoading: false });
+            return success;
+          } catch (err) {
+            set({ isLoading: false });
+            notification({
+              title: "",
+              message: "An unknown error occured, please try again later",
+              type: "danger",
+            });
+            return false;
+          }
+        },
+        getBankAccounts: async (employerId) => {
+          set({ isLoading: true });
+          const response = await getBankAccounts(employerId);
+          const { success, statusCode, data, message } = response;
+
+          set({ bankAccounts: data });
+
+          if (statusCode === 400) {
+            set({ errors: data });
+            notification({
+              title: "",
+              message: message,
+              type: success ? "success" : "danger",
+            });
+          }
+          set({ isLoading: false });
+        },
+        addBankAccount: async (newAccount) => {
+          try {
+            set({ isLoading: true });
+            const response = await addBankAccount(newAccount);
+
+            const { success, statusCode, data, message }: any = response;
+
+            if (success) {
+              notification({
+                title: "",
+                message,
+                type: "success",
+              });
+
+              var existingAccount = get().bankAccounts;
+
+              set({
+                bankAccounts:
+                  existingAccount?.length > 0
+                    ? [{...data}, ...get().bankAccounts]
+                    : [{ ...data }],
+              });
+            } else {
+              if (statusCode === 400) {
+                set({ errors: data });
+              }
+
+              notification({
+                title: "",
+                message: message,
+                type: "danger",
+              });
+            }
+            set({ isLoading: false });
+            return success;
+          } catch (err) {
+            set({ isLoading: false });
+            notification({
+              title: "",
+              message: "An unknown error occured, please try again later",
+              type: "danger",
+            });
+            return false;
+          }
+        },
+        deleteBankAccount: async (accountId) => {
+          try {
+            set({ isLoading: true });
+            const response = await deleteBankAccount(accountId);
+            const { success, statusCode, data, message }: any = response;
+            if (success) {
+              set((state) => ({
+                bankAccounts: state.bankAccounts.filter(
+                  (acc) => acc.id !== accountId
                 ),
               }));
               notification({

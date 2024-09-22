@@ -36,34 +36,34 @@ export const addEmployer = (employer: NewEmployer) =>
     method: "POST",
   });
 
-  export const editEmployer = (employer: UpdateEmployer) => {
-    const data = new FormData();
-  
-    data.append("Name", employer?.name);
-    data.append("About", employer?.about);
-    data.append("Caption", employer?.caption);
-    data.append("Services", employer?.services);
-    data.append("TermsAndConditions", employer?.termsAndConditions);
-    data.append("PrivacyPolicy", employer?.privacyPolicy);
-    data.append("LegalDocument", employer?.legalDocument);
-    data.append("HeadOfficeAddress", employer?.headOfficeAddress);
-    data.append("ContactLine", employer?.contactLine);
-    data.append("Weblink", employer?.weblink);
-  
-    if (employer?.logo?.length > 0) {
-      Array.from(employer?.logo)?.forEach((file: any, i: any) => {
-        data.append(`Logo`, file);
-      });
-    }
-  
-    return apicall({
-      endpoint: "employers",
-      body: data,
-      method: "PUT",
-      multipart: true,
-      auth: true,
+export const editEmployer = (employer: UpdateEmployer) => {
+  const data = new FormData();
+
+  data.append("Name", employer?.name);
+  data.append("About", employer?.about);
+  data.append("Caption", employer?.caption);
+  data.append("Services", employer?.services);
+  data.append("TermsAndConditions", employer?.termsAndConditions);
+  data.append("PrivacyPolicy", employer?.privacyPolicy);
+  data.append("LegalDocument", employer?.legalDocument);
+  data.append("HeadOfficeAddress", employer?.headOfficeAddress);
+  data.append("ContactLine", employer?.contactLine);
+  data.append("Weblink", employer?.weblink);
+
+  if (employer?.logo?.length > 0) {
+    Array.from(employer?.logo)?.forEach((file: any, i: any) => {
+      data.append(`Logo`, file);
     });
-  };
+  }
+
+  return apicall({
+    endpoint: "employers",
+    body: data,
+    method: "PUT",
+    multipart: true,
+    auth: true,
+  });
+};
 
 export const verifyEmployer = (email: string, otp: string) =>
   apicall({
@@ -132,6 +132,33 @@ export const deleteEmployee = (employeeId: string) =>
   apicall({
     endpoint: "employees",
     param: `${employeeId}`,
+    method: "DELETE",
+    auth: true,
+  });
+
+// BANK ACCOUNT
+export const addBankAccount = (bankAccount: NewBankAccount) =>
+  apicall({
+    endpoint: "employers/bank-accounts",
+    body: {
+      ...bankAccount,
+    },
+    method: "POST",
+    auth: true,
+  });
+
+export const getBankAccounts = (merchantId: string) =>
+  apicall({
+    endpoint: "employers",
+    param: `${merchantId}/bank-accounts`,
+    method: "GET",
+    auth: false,
+  });
+
+export const deleteBankAccount = (bankId: string) =>
+  apicall({
+    endpoint: "employers/bank-accounts",
+    param: `${bankId}`,
     method: "DELETE",
     auth: true,
   });

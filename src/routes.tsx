@@ -22,7 +22,7 @@ import {
   MdStore,
 } from "react-icons/md";
 import { FaUsers, FaUserCircle, FaFileArchive } from "react-icons/fa";
-import { GiReceiveMoney, GiWallet } from "react-icons/gi";
+import { GiBank, GiCartwheel, GiReceiveMoney, GiWallet } from "react-icons/gi";
 import Catalogs from "views/admin/stores/components/Catalogs";
 import PointOfSale from "views/admin/pos";
 import Invoice from "views/general/Invoice";
@@ -30,6 +30,7 @@ import VerifyAccount from "views/auth/VerifyAccount";
 import Archives from "views/admin/archives";
 import Websales from "views/admin/websales";
 import WebInvoice from "views/general/webInvoice";
+import BankAccounts from "views/admin/bankAccounts";
 
 const routes = [
   {
@@ -85,7 +86,7 @@ const routes = [
     name: "Web sales",
     layout: "/admin",
     path: "web-sales",
-    icon: <GiWallet className="h-6 w-6" />,
+    icon: <GiCartwheel className="h-6 w-6" />,
     component: <Websales />,
   },
   {
@@ -131,6 +132,13 @@ const routes = [
     component: <Archives />,
   },
   {
+    name: "Bank Accounts",
+    layout: "/admin",
+    path: "bank-accounts",
+    icon: <GiBank className="h-6 w-6" />,
+    component: <BankAccounts />,
+  },
+  {
     name: "Profile",
     layout: "/admin",
     path: "profile",
@@ -150,6 +158,6 @@ const routes = [
     path: "web-invoice/:employerId/:invoiceId/:size",
     icon: "",
     component: <WebInvoice />,
-  }
+  },
 ];
 export default routes;

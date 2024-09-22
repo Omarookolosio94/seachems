@@ -330,4 +330,24 @@ declare global {
     message: string;
     data: any;
   }
+  interface NewBankAccount {
+    accountName: string;
+    accountNumber: string;
+    bank: string;
+  }
+
+  interface BankAccount {
+    id: string;
+    type: string;
+    bank: string;
+    accountName: string;
+    accountNumber: string;
+    isActive: boolean;
+    addedBy: string;
+    updatedBy: string;
+    lastUpdated: string;
+    dateAdded: string;
+    employerId: string;
+    employer: null;
+  }
 }

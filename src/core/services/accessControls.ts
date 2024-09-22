@@ -42,6 +42,12 @@ const ACCESS_LEVEL: any = {
     [Roles.Manager]: "READ,WRITE,UPDATE",
     [Roles.Ceo]: "READ,WRITE,UPDATE,DELETE",
   },
+  accounts: {
+    [Roles.Inventory]: "READ",
+    [Roles.Sales]: "READ",
+    [Roles.Manager]: "READ",
+    [Roles.Ceo]: "READ,WRITE,UPDATE,DELETE",
+  },
 };
 
 export const getAccess = (role: string) => {

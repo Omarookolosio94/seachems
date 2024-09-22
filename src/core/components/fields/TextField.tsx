@@ -1,5 +1,5 @@
 import reSizeField from "core/services/resizeField";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 function TextField(props: {
   styling?: string;
@@ -38,8 +38,14 @@ function TextField(props: {
     placeholder,
   } = props;
 
-  const textAreaRef = useRef(ref);
-  reSizeField(textAreaRef.current, value);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textAreaRef.current) {
+      textAreaRef.current.style.height = "auto";
+      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
+    }
+  }, [value]);
 
   return (
     <div className={`${extra} relative`}>
